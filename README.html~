@@ -1,0 +1,135 @@
+<html>
+<head>
+   <title>Project 3: Commonly Asked Questions</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EE" vlink="#551A8B" alink="#FF0000">
+
+<center>
+<h2><font color=#886633>Project 3: Commonly Asked Questions</font></h2>
+</center>
+
+<p><br><b>What is in the template directory?</b>
+<p>
+<pre>
+  station.c	   contains source code of station
+  utils.c	   contains source code of utilities
+  common.h         header file included by all .c files
+  makefile         make file to build station
+
+  goodstation      station executable 
+  goodhub          hub executable
+
+  etc              directory of configuration files
+  etc/hosts        host names and their ip addresses
+  etc/&lt;name>.if    interfaces file of host <name>
+  etc/&lt;name>.rt    routing table file of host <name>
+</pre>
+
+<p><br><b>How do i test these programs?</b>
+<p>
+
+You run the hub first and then  many stations. Here is an example of one
+subnet net34, two stations kepler and mercury. In this example, there is
+no router and all the stations are  on the same LAN. They can reach each
+other directly.
+(&lt;terminal1&gt; means work on terminal1, and so on) 
+
+<pre>
+&lt;terminal1&gt; % goodhub net34 
+&lt;terminal2&gt; % goodstation kepler 
+&lt;terminal3&gt; % goodstation mercury 
+&lt;terminal2:kepler&gt; % mercury hi, mercury 
+&lt;terminal3:mercury&gt; % kepler nice to meet you, kepler 
+</pre>
+
+<!--
+<pre>
+    % goodhub net34
+    % station kepler
+    % station mercury
+</pre>
+-->
+<p>
+
+  Here is a bigger example  configuration of three subnets net34, net35,
+  net36, a router and many  stations tera, peca, birch, kepler, mercury,
+  and caesar.
+(mercury & kepler link to net34, tera & peca & caesar link to net35, birch link to net36) 
+
+<pre>
+&lt;terminal1&gt; % goodhub net34 
+&lt;terminal2&gt; % goodhub net35 
+&lt;terminal3&gt; % goodhub net36 
+
+&lt;terminal4&gt; % goodstation router 
+
+&lt;terminal5&gt; % goodstation tera 
+&lt;terminal6&gt; % goodstation peca 
+&lt;terminal7&gt; % goodstation birch 
+&lt;terminal8&gt; % goodstation kepler 
+&lt;terminal9&gt; % goodstation mercury 
+&lt;terminal10&gt; % goodstation caesar 
+
+&lt;terminal5:tera&gt; % peca hi, peca, I am tera 
+&lt;terminal6:peca&gt; % tera nice to meet you tera 
+
+&lt;terminal5:tera&gt; % birch hi, birch 
+&lt;terminal7:birch&gt; % tera nice to meet you, tera 
+</pre>
+
+<!--
+<pre>
+    % goodhub net34
+    % goodhub net35
+    % goodhub net36
+
+    % station router
+
+    % station tera
+    % station peca
+    % station birch
+    % station kepler
+    % station mercury
+    % station caesar
+</pre>
+-->
+
+<p><br><b>What is there under "etc" directory?</b>
+<p>
+
+All the configuration files are under "etc" directory. There is a "hosts"
+file containing the  names of stations and their  ip addresses. <b>These
+names are only symbolic and they have no relevance to real machines</b>. 
+<p>
+
+There is a ".if" file decribing the interfaces for each station. All the
+stations except the  "router" has just one interface.  In case of router
+we have three interfaces. For each  interface, we have its name, the LAN
+it is attached to, the IP address and the hardware address.
+<p>
+
+There is a ".rt" file describing  the routing table for each station. In
+the example case  given, all the stations have  exactly two entries: one
+for directly attached network and  the other for all other networks. The
+router has three  entries, one for each directly  attached network. Each
+entry  has  destination  address  prefix,  address mask,  next  hop  and
+outgoing subnet (effectively outgoing interface). 
+
+<p><br><b>How do i deal with "error : hub already exists" message?</b>
+<p>
+
+When  a hub  is  invoked with  'net34'  as the  argument,  it creates  a
+symbolic  link  ".net34.info"  to  a  string  that  has  something  like
+"alkaid:36137". This  way stations know the  host and the  port on which
+the hub is  running so that they  can connect to it. This  is similar to
+the way netscape creates a symbolic link "~/.netscape/lock" to store its
+whereabouts. <p>
+
+If you get the above  error message, it  means either there is  one hub
+running for  that LAN or somehow the  link was not removed  when the hub
+exited. If it is  the latter case, then you can get  rid of this problem
+by removing the link using "rm .net34.info".
+<p>
+
+</body>
+</html>
